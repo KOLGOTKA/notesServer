@@ -1,0 +1,12 @@
+// func (psg *Psg) NoteSave(name, lastName, note string) (err error) {
+// 	defer func() {err = errors.Wrap(err, "postgres NoteSave()")}()
+	
+// 	query := INSERT INTO notes (name, last_name, note) VALUES ($1, $2, $3)
+	
+// 	_, err = psg.conn.Exec(context.Background(), query, name, lastName, note)
+// 	if err != nil {
+// 	  err = errors.Wrap(err, "psg.conn.Exec(context.Background(), query, name, lastName, note)")
+// 	  return
+// 	}
+// 	return
+//   }
