@@ -1,32 +1,42 @@
 package main
 
 import (
-	"notes/gates/psg"
+	"flag"
 	"log"
+	"notes/controller/stdhttp"
 )
 
 func main() {
-	psg := psg.NewPsg("localhost", "postgres", "Nik26032003")
-	// if err != nil {
-	// 	log.Println(err)
-	// 	return
-	// }
-	defer psg.Close()
+	var st string
+	// Определение флагов
+	flagList := flag.Bool("l", false, "Use list storage")
+	flagMap := flag.Bool("m", false, "Use map storage")
 
-	err := psg.NoteSave("Ivan", "Ivanov", "Hello world!")
-	if err != nil {
-		log.Println(err)
+	// Разбор аргументов командной строки
+	flag.Parse()
+
+	// Проверка, что установлен один из флагов
+	if !(*flagList || *flagMap) || (*flagList && *flagMap) {
+		log.Println("Error: you must add flag -l to use list storage or flag -m to use map storage")
+		flag.PrintDefaults()
 		return
 	}
-	err = psg.NoteRead(3)
-	if err != nil {
-		log.Println(err)
+
+	// Если есть другие аргументы, выдаем ошибку
+	if len(flag.Args()) > 0 {
+		log.Println("Error: bad arguments")
+		flag.PrintDefaults()
 		return
 	}
-	err = psg.NoteDelete(2)
-	if err != nil {
-		log.Println(err)
-		return
+
+	// Проверка значений флагов
+	if *flagList {
+		st = "list" ////////////////////////////////////////// норм
 	}
-	
+	if *flagMap {
+		st = "map"
+	}
+	hs := stdhttp.NewController(":4040", st)
+	hs.Start()
+
 }
