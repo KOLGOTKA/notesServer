@@ -7,8 +7,6 @@ import (
 	"log"
 	"net/http"
 	"notes/gates/storage"
-	"notes/gates/storage/list"
-	"notes/gates/storage/mp"
 	"notes/models/dto"
 	"notes/pkg"
 	"strconv"
@@ -19,7 +17,7 @@ type Controller struct {
 	stor storage.Storage
 }
 
-func NewController(addr string, storType string) (hs *Controller) {
+func NewController(addr string, st storage.Storage) (hs *Controller) {
 	hs = new(Controller)
 	hs.srv = http.Server{}
 	mux := http.NewServeMux()
@@ -58,10 +56,7 @@ func NewController(addr string, storType string) (hs *Controller) {
 	})
 	hs.srv.Handler = mux
 	hs.srv.Addr = addr
-	if storType == "list" {
-		hs.stor = list.NewList()
-	}
-	hs.stor = mp.NewMap()
+	hs.stor = st
 	return hs
 }
 
