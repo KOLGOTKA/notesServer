@@ -23,6 +23,13 @@ func NewController(addr string, st storage.Storage) (hs *Controller) {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/save", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		if r.Method != http.MethodPost {
 			log.Println("Method Not Allowed", http.StatusMethodNotAllowed)
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -31,6 +38,13 @@ func NewController(addr string, st storage.Storage) (hs *Controller) {
 		hs.NoteSaveHandler(w, r)
 	})
 	mux.HandleFunc("/read", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		if r.Method != http.MethodPost {
 			log.Println("Method Not Allowed", http.StatusMethodNotAllowed)
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -39,6 +53,13 @@ func NewController(addr string, st storage.Storage) (hs *Controller) {
 		hs.NoteReadHandler(w, r)
 	})
 	mux.HandleFunc("/update", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		if r.Method != http.MethodPost {
 			log.Println("Method Not Allowed", http.StatusMethodNotAllowed)
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -47,6 +68,13 @@ func NewController(addr string, st storage.Storage) (hs *Controller) {
 		hs.NoteUpdateHandler(w, r)
 	})
 	mux.HandleFunc("/delete", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		if r.Method != http.MethodPost {
 			log.Println("Method Not Allowed", http.StatusMethodNotAllowed)
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -54,6 +82,7 @@ func NewController(addr string, st storage.Storage) (hs *Controller) {
 		}
 		hs.NoteDeleteHandler(w, r)
 	})
+
 	hs.srv.Handler = mux
 	hs.srv.Addr = addr
 	hs.stor = st
