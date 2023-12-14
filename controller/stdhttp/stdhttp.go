@@ -105,10 +105,6 @@ func (hs *Controller) NoteSaveHandler(w http.ResponseWriter, req *http.Request) 
 		return
 	}
 	index, err := hs.stor.Add(note)
-	if index != 0 {
-		index -= 1
-	}
-	// fmt.Println("New index --> " + strconv.FormatInt(index+index, 10)) /////////////////////////
 	if err != nil {
 		e := myErr.Wrap(err, "")
 		response.Result = "Error"
@@ -180,8 +176,8 @@ func (hs *Controller) NoteReadHandler(w http.ResponseWriter, req *http.Request) 
 			w.Write(json.RawMessage(`{"result":"Error","data":{},"error":"` + erro.Error() + `"}`))
 			return
 		}
-		w.Write(js) //////////////////////////////////////////
-		log.Println(e.Error()) ///////////////////////////////
+		log.Println(e.Error())
+		w.Write(js)
 		return
 	}
 
@@ -320,12 +316,6 @@ func (hs *Controller) NoteUpdateHandler(w http.ResponseWriter, req *http.Request
 		w.Write(js)
 		log.Println(e.Error())
 		return
-	}
-	if index == 1 {
-		log.Println("YAYAYAYAYA HOW&!&!&!&!&!")
-	}
-	if index != 0 {
-		index -= 1
 	}
 
 	hs.stor.RemoveByIndex(requestData.Index)
