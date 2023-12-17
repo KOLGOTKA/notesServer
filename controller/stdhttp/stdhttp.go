@@ -263,7 +263,7 @@ func (hs *Controller) NoteUpdateHandler(w http.ResponseWriter, req *http.Request
 	}
 
 	var requestData struct {
-		Index int64    `json:"index"`
+		Index int64    `json:"index,string"`
 		Data  dto.Note `json:"data"`
 	}
 
